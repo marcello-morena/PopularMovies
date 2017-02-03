@@ -43,7 +43,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         // Retrieve movie data from intent
         Intent intent = getIntent();
-        Movie movie = (Movie) intent.getParcelableExtra(Constants.INTENT_MOVIE_EXTRA);
+        Movie movie = intent.getParcelableExtra(Constants.INTENT_MOVIE_EXTRA);
 
         // Populate movie description
         setTitle(movie.getTitle());
@@ -57,6 +57,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         moviePoster.setContentDescription(movie.getOriginalTitle());
         Picasso.with(this)
                 .load(generatePosterUrl(movie.getPosterPath(), Constants.MOVIEDB_POSTER_WIDTH_185))
+                .placeholder(R.mipmap.poster_placeholder)
+                .error(R.mipmap.poster_load_error)
                 .into(moviePoster);
     }
 

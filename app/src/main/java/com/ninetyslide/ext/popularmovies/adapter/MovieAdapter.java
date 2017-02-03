@@ -77,6 +77,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         // Use Picasso to load the Movie Poster Thumbnail
         Picasso.with(context)
                 .load(generatePosterUrl(movie.getPosterPath(), Constants.MOVIEDB_POSTER_WIDTH_185))
+                .placeholder(R.mipmap.poster_placeholder)
+                .error(R.mipmap.poster_load_error)
                 .into(moviePosterThumb);
     }
 
