@@ -33,6 +33,8 @@ public final class Constants {
     public static final String MOVIEDB_API_BASE_URL = "https://api.themoviedb.org/3";
     public static final String MOVIEDB_API_TOPRATED_URL = "/movie/top_rated";
     public static final String MOVIEDB_API_POPULAR_URL = "/movie/popular";
+    public static final String MOVIEDB_API_REVIEWS_URL_PATTERN = "/movie/%s/reviews";
+    public static final String MOVIEDB_API_VIDEOS_URL_PATTERN = "/movie/%s/videos";
     public static final String MOVIEDB_API_PARAMETER_APIKEY = "api_key";
     public static final String MOVIEDB_API_JSON_NAME_RESULTS = "results";
 

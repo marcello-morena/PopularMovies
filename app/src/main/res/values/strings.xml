@@ -17,6 +17,7 @@
 <resources>
     <string name="app_name">Pop Movies</string>
     <string name="list_load_error">An error occurred during the loading of the movie list!</string>
+    <string name="no_movies_error">There are no movies here yet!</string>
     <string name="movie_poster_description">Movie Poster</string>
     <string name="action_popular">Popular</string>
     <string name="action_toprated">Top Rated</string>
@@ -25,4 +26,10 @@
     <string name="tv_movie_vote_average_lbl">Vote Average: </string>
     <string name="title_placeholder">Movie Title</string>
     <string name="poster_detail_transition">poster_detail</string>
+    <string name="action_favorite">Favorites</string>
+    <string name="no_video_error">There are no videos to show for this movie</string>
+    <string name="video_title">Related Videos:</string>
+    <string name="review_title">Reviews:</string>
+    <string name="no_review_error">There are no reviews to show for this movie</string>
+    <string name="no_network_error">You seems to be offline. Turn on your internet connection to access this data!</string>
 </resources>

@@ -116,6 +116,16 @@
                         android:layout_marginStart="@dimen/view_horizontal_margin"
                         android:layout_toEndOf="@id/tv_movie_vote_average_lbl" />
 
+                    <ImageButton
+                        android:id="@+id/ib_favorite_toggle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_movie_vote_average"
+                        android:layout_marginBottom="@dimen/view_vertical_margin"
+                        android:layout_marginStart="@dimen/activity_horizontal_margin"
+                        android:background="@null"
+                        />
+
                 </RelativeLayout>
 
             </LinearLayout>
@@ -126,6 +136,55 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ll_movie_desc"
                 android:layout_marginTop="@dimen/activity_vertical_margin" />
+
+            <View
+                android:id="@+id/sep_videos"
+                android:layout_marginTop="@dimen/view_vertical_margin"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@android:color/black"
+                android:layout_below="@id/tv_movie_overview"/>
+
+            <LinearLayout
+                android:id="@+id/ll_videos_list"
+                android:layout_marginTop="@dimen/view_vertical_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sep_videos"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/video_title"/>
+
+                <include layout="@layout/videos_list"/>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/sep_reviews"
+                android:layout_marginTop="@dimen/view_vertical_margin"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@android:color/black"
+                android:layout_below="@id/ll_videos_list"/>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/view_vertical_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sep_reviews"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/review_title"/>
+
+                <include layout="@layout/reviews_list"/>
+
+            </LinearLayout>
 
         </RelativeLayout>
 

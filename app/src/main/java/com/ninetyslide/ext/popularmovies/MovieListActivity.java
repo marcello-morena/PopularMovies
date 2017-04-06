@@ -52,6 +52,8 @@ public class MovieListActivity extends AppCompatActivity {
 
     private MovieAdapter movieAdapter;
 
+    private MovieSort currentSortOrder = Constants.MOVIE_DEFAULT_SORT_ORDER;
+
     private MovieAdapter.OnMovieClickHandler clickHandler = new MovieAdapter.OnMovieClickHandler() {
         @Override
         public void onClick(Movie movie, View iv) {
@@ -64,11 +66,15 @@ public class MovieListActivity extends AppCompatActivity {
         }
     };
 
-    private OnFetchResultHandler fetchActions = new OnFetchResultHandler() {
+    private FetchMovieTask.OnFetchMovieResultHandler fetchActions = new FetchMovieTask.OnFetchMovieResultHandler() {
         @Override
         public void onFetchSuccess(List<Movie> movies) {
-            changeUi(UiState.SHOW_MOVIE, null);
-            movieAdapter.setMovieData(movies);
+            if (movies.isEmpty()) {
+                changeUi(UiState.SHOW_ERROR, getString(R.string.no_movies_error));
+            } else {
+                changeUi(UiState.SHOW_MOVIE, null);
+                movieAdapter.setMovieData(movies);
+            }
         }
 
         @Override
@@ -79,6 +85,7 @@ public class MovieListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // TODO: Use ButterKnife
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_list);
 
@@ -103,6 +110,14 @@ public class MovieListActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (currentSortOrder == MovieSort.FAVORITES) {
+            loadMovieData(MovieSort.FAVORITES);
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.sort, menu);
@@ -119,6 +134,9 @@ public class MovieListActivity extends AppCompatActivity {
                 break;
             case R.id.action_toprated:
                 loadMovieData(MovieSort.TOP_RATED);
+                break;
+            case R.id.action_favorite:
+                loadMovieData(MovieSort.FAVORITES);
                 break;
         }
 
@@ -158,8 +176,9 @@ public class MovieListActivity extends AppCompatActivity {
      * @param sortOrder The sort order to use during data fetch.
      */
     private void loadMovieData(MovieSort sortOrder) {
+        currentSortOrder = sortOrder;
         changeUi(UiState.LOADING, null);
-        new FetchMovieTask(fetchActions, sortOrder).execute();
+        new FetchMovieTask(this, fetchActions, sortOrder).execute();
     }
 
     /**
@@ -176,7 +195,8 @@ public class MovieListActivity extends AppCompatActivity {
 
     public enum MovieSort {
         MOST_POPULAR,
-        TOP_RATED
+        TOP_RATED,
+        FAVORITES
     }
 
     public enum UiState {
@@ -185,8 +205,4 @@ public class MovieListActivity extends AppCompatActivity {
         SHOW_ERROR
     }
 
-    public interface OnFetchResultHandler {
-        void onFetchSuccess(List<Movie> movies);
-        void onFetchError(String errorMessage);
-    }
 }

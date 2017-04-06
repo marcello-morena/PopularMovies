@@ -16,14 +16,18 @@
 
 package com.ninetyslide.ext.popularmovies.util;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
 import com.ninetyslide.ext.popularmovies.MovieListActivity;
+import com.ninetyslide.ext.popularmovies.R;
 import com.ninetyslide.ext.popularmovies.bean.Movie;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+
+import static com.ninetyslide.ext.popularmovies.MovieListActivity.MovieSort.FAVORITES;
 
 /**
  * AsyncTask that handles all the retrieval of movie data.
@@ -32,33 +36,51 @@ import java.util.List;
  */
 public class FetchMovieTask extends AsyncTask<Void, Void, List<Movie>> {
 
+    private Context context;
     private MovieListActivity.MovieSort sortOrder;
-    private MovieListActivity.OnFetchResultHandler fetchResultHandler;
+    private OnFetchMovieResultHandler fetchMovieResultHandler;
     private String errorMessage;
 
-    public FetchMovieTask(MovieListActivity.OnFetchResultHandler fetchResultHandler, MovieListActivity.MovieSort sortOrder) {
+    public FetchMovieTask(Context context, OnFetchMovieResultHandler fetchMovieResultHandler, MovieListActivity.MovieSort sortOrder) {
+        this.context = context;
         this.sortOrder = sortOrder;
-        this.fetchResultHandler = fetchResultHandler;
+        this.fetchMovieResultHandler = fetchMovieResultHandler;
     }
 
     @Override
     protected List<Movie> doInBackground(Void... voids) {
-        URL movieUrl = NetworkUtils.buildUrl(sortOrder);
 
-        try {
-            return NetworkUtils.fetchMovieData(movieUrl);
-        } catch (IOException e){
-            errorMessage = e.getMessage();
-            return null;
+        if (sortOrder == FAVORITES) {
+            // Fetch movies from content provider
+            return FavoriteMovieUtils.fetchFavoriteMovies(context);
+        } else {
+            URL movieUrl = NetworkUtils.buildMoviesUrl(sortOrder);
+
+            try {
+                return NetworkUtils.fetchMovieData(movieUrl);
+            } catch (IOException e) {
+                if (!NetworkUtils.isNetworkAvailable(context)) {
+                    errorMessage = context.getString(R.string.no_network_error);
+                } else {
+                    errorMessage = e.getMessage();
+                }
+                return null;
+            }
         }
     }
 
     @Override
     protected void onPostExecute(List<Movie> movies) {
         if (movies == null) {
-            fetchResultHandler.onFetchError(errorMessage);
+            fetchMovieResultHandler.onFetchError(errorMessage);
         } else {
-            fetchResultHandler.onFetchSuccess(movies);
+            fetchMovieResultHandler.onFetchSuccess(movies);
         }
     }
+
+    public interface OnFetchMovieResultHandler {
+        void onFetchSuccess(List<Movie> movies);
+        void onFetchError(String errorMessage);
+    }
+
 }

@@ -14,28 +14,38 @@
  * limitations under the License.
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+package com.ninetyslide.ext.popularmovies.bean;
 
-buildscript {
-    repositories {
-        jcenter()
+import java.util.List;
+
+/**
+ * Bean representing a list of videos for a movie returned from the theMovieDB API.
+ *
+ * @author Marcello Morena
+ */
+
+public class Videos {
+
+    private int id;
+    private List<Video> results;
+
+    public Videos() {
     }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.0'
 
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+    public int getId() {
+        return id;
     }
-}
 
-allprojects {
-    repositories {
-        jcenter()
+    public void setId(int id) {
+        this.id = id;
     }
-}
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+    public List<Video> getResults() {
+        return results;
+    }
+
+    public void setResults(List<Video> results) {
+        this.results = results;
+    }
+
 }
